@@ -28,7 +28,7 @@ fn validate_hash(block: &Block<String>, dif: usize) -> bool {
     let u_hash = block.calculate_hash();
     let chars = u_hash.chars().count();
     let char_vec: Vec<char> = u_hash.chars().collect();
-    for n in (chars - dif - 1)..(chars - 1) {
+    for n in (chars - dif)..(chars) {
         if char_vec[n] != '0' {
             return false
         }
