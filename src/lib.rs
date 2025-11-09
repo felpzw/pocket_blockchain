@@ -32,7 +32,17 @@ pub mod pocket_chain {
 
                 format!("{:x}", result)
 
-            }  
+            }
+
+            pub fn update_nonce(&mut self, value: &u64) {
+                self.nonce = *value;
+            }
+
+            pub fn new_actual_block(insert_data: T, insert_index: u64, first_nonce: &u64) -> Self {
+                Block { index: insert_index, timestamp: Utc::now().to_string(), data: insert_data, previous_hash: String::default(), nonce: *first_nonce, hash: String::default() }
+            }
+
+
 
         }
         
@@ -42,7 +52,7 @@ pub mod pocket_chain {
         }
 
         impl<T: Serialize + Default + Debug> Blockchain<T> {
-            pub fn new(difficult: u32) -> Self
+            pub fn new() -> Self
             {   
                 let mut genesis = Block {
                     index: 0,
@@ -53,10 +63,17 @@ pub mod pocket_chain {
                     hash: String::new(),
                  };
                 genesis.hash = genesis.calculate_hash();
-                println!("{:?}", genesis);
+                //println!("{:?}", genesis);
                 Blockchain { chain: vec![genesis] }
             }
+
+            pub fn append(&mut self, block: Block<T>) {
+                self.chain.push(block);
+            }
+        
+            
         }
+
 
 
     }
